@@ -1,4 +1,5 @@
 const { auth } = require("../services/auth");
+const createUser = require("../services/createUser");
 
 const getRequest = (req, res) => {
     res.send('My first app!')
@@ -13,10 +14,11 @@ const oldRequest = (req, res) => {
     res.send('This is my old request!')
 };
 
-const postRequest = (req, res) => {
+const postRequest = async (req, res) => {
     const data = req.body;
-    const authState = auth(data);
-    res.send('This is post request: '+ authState);
+    createUser(data).then((user) => {
+        res.send('This is post request: '+ user);
+    });
 }
 
 module.exports = {getRequest, newRequest, oldRequest, postRequest}
