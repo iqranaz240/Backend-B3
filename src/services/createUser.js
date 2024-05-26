@@ -11,4 +11,14 @@ const createUser = async (userData) => {
     }
 };
 
-module.exports = createUser
+const getUsers = async () => {
+    try {
+        const allUsers = await User.find();
+        return allUsers;
+    } catch (error) {
+        console.error('Error getting user:', error);
+        return error
+    }
+}
+
+module.exports = {createUser, getUsers}

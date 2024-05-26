@@ -3,8 +3,8 @@ const router = express.Router()
 const cont = require('../controllers/getRoutes')
 
 router.get('/', cont.getRequest)
-router.get('/new', cont.newRequest)
-router.get('/old', cont.oldRequest)
-router.post('/getUser', cont.postRequest)
+
+router.post('/createUser', cont.postRequest)
+router.get('/getUser', cont.getUser)
 
 module.exports = router
