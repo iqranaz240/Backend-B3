@@ -1,3 +1,5 @@
+const bcrypt = require('bcryptjs');
+
 const { auth } = require("../services/auth");
 const {createUser, getUsers, findUserByEmail, deleteUser, updateUser} = require("../services/user");
 
@@ -5,20 +7,28 @@ const getRequest = (req, res) => {
     res.send('My first app!')
 };
 
-const newRequest = (req, res) => {
-    res.send('This is my new request!')
-};
-
-const oldRequest = (req, res) => {
-    console.log(req.body)
-    res.send('This is my old request!')
-};
-
-const postRequest = async (req, res) => {
+const signup = async (req, res) => {
     const data = req.body;
+    data.password = bcrypt.hashSync(data.password, 8);
     createUser(data).then((user) => {
         res.send('This is post request: '+ user);
     });
+}
+
+const login = async (req, res) => {
+    try {
+        const data = req.body;
+        const user = await findUserByEmail(data.email);
+        const authenticated = bcrypt.compareSync(req.body.password, user.password);
+        if (authenticated) {
+            res.status(200).send({msg: 'login successful.'})
+        }
+        else {
+            res.status(403).send({msg: 'incorrect email/password.'})
+        }
+    } catch (error) {
+        res.status(500).send({ error: 'An error occurred while retrieving the user.' });
+    }
 }
 
 const getUser = async (req, res) => {
@@ -65,4 +75,4 @@ const updateUserByEmail = async (req, res) => {
 };
 
 
-module.exports = {getRequest, newRequest, oldRequest, postRequest, getUser, getUserByEmail, deleteUserByEmail, updateUserByEmail}
+module.exports = {getRequest, signup, login, getUser, getUserByEmail, deleteUserByEmail, updateUserByEmail}

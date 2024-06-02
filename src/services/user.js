@@ -1,4 +1,5 @@
 const User = require('../models/user')
+
 const createUser = async (userData) => {
     try {
         const user = new User(userData);

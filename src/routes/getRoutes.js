@@ -4,7 +4,8 @@ const cont = require('../controllers/getRoutes')
 
 router.get('/', cont.getRequest)
 
-router.post('/createUser', cont.postRequest)
+router.post('/signup', cont.signup)
+router.post('/login', cont.login)
 router.get('/getUsers', cont.getUser)
 router.get('/getUserByEmail', cont.getUserByEmail)
 router.delete('/deleteUserByEmail', cont.deleteUserByEmail)
